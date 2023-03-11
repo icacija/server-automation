@@ -23,26 +23,26 @@ fi
 installServerSetup(){
     echo -e "${RED}[*] Choose apache in the server list while installing phpmyadmin${NC}"
     echo -e "${YELLOW}[+] updating System first${NC}"
-    sudo apt-get update -y > /dev/null && sudo apt-get upgrade -y > /dev/null
+    apt update -y && apt-get upgrade -y
     echo -e "${YELLOW}[+] Installing apache2 server and its tools${NC}"
-    sudo apt-get install apache2 apache2-doc apache2-utils libexpat1 ssl-cert -y > /dev/null
+    apt install apache2 apache2-doc apache2-utils libexpat1 ssl-cert -y
     echo -e "${YELLOW}[+] Installing php and its tools${NC}"
-    sudo apt-get install php libapache2-mod-php zip -y > /dev/null
+    apt install php libapache2-mod-php zip -y
     echo -e "${YELLOW}[+] Installing Mysql Database${NC}"
-    sudo apt-get install mysql-server mysql-client -y > /dev/null
+    apt install mysql-server mysql-client -y
     echo -e "${YELLOW}[+] Installing Phpmyadmin${NC}"
-    sudo apt-get install phpmyadmin -y 
+    apt install phpmyadmin -y 
     echo -e "${YELLOW}[+] Changing permissions${NC}"
     sudo chown -R www-data:www-data /var/www
     echo -e "${YELLOW}[+] enable and restarting services${NC}"
     echo ""
-    sudo service apache2 restart > /dev/null
-    sudo service mysql restart > /dev/null
-    sudo a2enmod rewrite > /dev/null
-    sudo systemctl enable apache2 > /dev/null
-    sudo systemctl enable mysql > /dev/null
-    sudo systemctl restart apache2 > /dev/null
-    sudo systemctl restart mysql > /dev/null
+    systemctl restart apache2
+    systemctl restart mysql
+    a2enmod rewrite
+    systemctl enable apache2
+    systemctl enable mysql
+    systemctl restart apache2
+    systemctl restart mysql
     echo  -e "${GREEN}[+] Done Click enter to continue${NC}"
     read
 }
