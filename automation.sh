@@ -15,7 +15,7 @@ NC='\033[0m' # No Color
 #check permissions
 if [[ $EUID -ne 0 ]]; then
     echo ""
-    echo -e "${RED}[-] This script must be run as root! Login as root, sudo or su.${NC}" 
+    echo -e "${RED}[-] This script must be run as root! Login as root,  or su.${NC}" 
     echo ""
     exit 1;
 fi
@@ -33,7 +33,7 @@ installServerSetup(){
     echo -e "${YELLOW}[+] Installing Phpmyadmin${NC}"
     apt install phpmyadmin -y 
     echo -e "${YELLOW}[+] Changing permissions${NC}"
-    sudo chown -R www-data:www-data /var/www
+     chown -R www-data:www-data /var/www
     echo -e "${YELLOW}[+] enable and restarting services${NC}"
     echo ""
     systemctl restart apache2
@@ -126,7 +126,7 @@ createSwap() {
 
     #create swap file on root system and set file size to mb variable
     echo -e "${YELLOW}[+] Create swap file.${NC}"
-    sudo fallocate -l ${swapSizeGb}G /swapfile
+     fallocate -l ${swapSizeGb}G /swapfile
     dd if=/dev/zero of=/swapfile bs=1M count=$mb
 
     #set read and write permissions
@@ -187,12 +187,12 @@ function setupSwapMain() {
 ########### virtual host ######
 virtualHost(){
         echo -e "${BLUE} You have following sites enabled"
-    sudo ls -l /etc/apache2/sites-enabled/
+     ls -l /etc/apache2/sites-enabled/
     echo -e "${NC}"
   default_domain="example.com"
   read -p "[?] Enter domain name default name [$default_domain]: " name
   name="${name:-$default_domain}"
-  DEFAULT_WEB_ROOT_DIR="/var/www/$name/public_html"
+  DEFAULT_WEB_ROOT_DIR="/var/www/$name"
   read -p "[?] Enter web root default  WEB_ROOT_DIR [$DEFAULT_WEB_ROOT_DIR]: " WEB_ROOT_DIR
     WEB_ROOT_DIR="${WEB_ROOT_DIR:-$DEFAULT_WEB_ROOT_DIR}"
  DEFAULT_EMAIL="admin@$name"
@@ -210,7 +210,7 @@ virtualHost(){
     rm -rf "$WEB_ROOT_DIR" || true
     mkdir -p "$WEB_ROOT_DIR" > /dev/null
     echo -e "${YELLOW}[+]Provide permissions for apache2 web server${NC}" 
-    sudo chown www-data:www-data -R "$WEB_ROOT_DIR"
+     chown www-data:www-data -R "$WEB_ROOT_DIR"
     echo "
         <VirtualHost *:80>
           ServerAdmin $email
@@ -236,7 +236,7 @@ virtualHost(){
 }
 virtualHostDelete(){
     echo -e "${BLUE} You have following sites enabled"
-    sudo ls -l /etc/apache2/sites-enabled/
+     ls -l /etc/apache2/sites-enabled/
     echo -e "${NC}"
     default_domain="example.com"
     read -p "[+] Enter domain name default name [$default_domain]: " name
@@ -365,7 +365,7 @@ fullAutomatedWP(){
       echo  -e "${Green}Database $DB_NAME and user $DB_USERNAME created with your password.${NC}"
     fi
       echo  -e "${YELLOW}[+] Manage permissions${NC}"
-      sudo chown -R www-data:www-data .
+       chown -R www-data:www-data .
     echo  -e "${GREEN}[+] All done press enter to continue${NC}"
     read
 
@@ -375,11 +375,11 @@ installSSl(){
     default_domain="example.com"
     read -p "[+] Enter domain name default name [$default_domain]: " name
     name="${name:-$default_domain}"
-    sudo ufw allow https
-    sudo add-apt-repository ppa:certbot/certbot
+     ufw allow https
+     add-apt-repository ppa:certbot/certbot
     echo  -e "${YELLOW}[+] Installing packages${NC}"
-    sudo apt install python-certbot-apache -y 
-    sudo certbot --apache -d "${name}"
+     apt install python-certbot-apache -y 
+     certbot --apache -d "${name}"
     echo -e "${NC}"
     echo  -e "${GREEN}[+] All done press enter to continue${NC}"
     read
