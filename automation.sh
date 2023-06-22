@@ -375,10 +375,10 @@ installSSl(){
     default_domain="example.com"
     read -p "[+] Enter domain name default name [$default_domain]: " name
     name="${name:-$default_domain}"
-     ufw allow https
-     add-apt-repository ppa:certbot/certbot
+     ufw allow 80/tcp
+     ufw allow 443/tcp
     echo  -e "${YELLOW}[+] Installing packages${NC}"
-     apt install python-certbot-apache -y 
+     apt install certbot python3-certbot-apache
      certbot --apache -d "${name}"
     echo -e "${NC}"
     echo  -e "${GREEN}[+] All done press enter to continue${NC}"
